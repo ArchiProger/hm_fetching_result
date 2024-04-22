@@ -40,4 +40,15 @@ final class UnificationResultsTests: XCTestCase {
         XCTAssertEqual(result.status, .failure("Description"))
         XCTAssertEqual(result.error?.localizedDescription, "Description")
     }
+    
+    func testAllFailureUnite() {
+        let result1 = FetchingResult<Double>.failure("Double failure")
+        let result2 = FetchingResult<Int>.failure("Int failure")
+        let result3 = FetchingResult<String>.failure("String failure")
+        
+        let result = unite(result1, result2, result3)
+        
+        XCTAssertNotEqual(result.status, .success)
+        XCTAssertNotEqual(result.status, .loading)
+    }
 }

@@ -8,14 +8,14 @@
 import Foundation
 
 public func unite<each Content>(_ content: repeat FetchingResult<each Content>) -> FetchingResult<(repeat each Content)> {
-    let tuple = (repeat each content)
+    let tuple = (repeat (each content).status)
     let mirror = Mirror(reflecting: tuple)
     
     for child in mirror.children {
-        guard let result = child.value as? FetchingResult<Any> else { continue }
+        guard let result = child.value as? FetchingStatus else { continue }
         
         switch result {
-            case .success(_):
+            case .success:
                 continue
                 
             case .loading:
@@ -27,7 +27,6 @@ public func unite<each Content>(_ content: repeat FetchingResult<each Content>) 
     }
     
     let result = (repeat (each content).value!)
-            
+    
     return .success(result)
 }
-
